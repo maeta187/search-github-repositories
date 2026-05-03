@@ -1,0 +1,57 @@
+# タスクリスト
+
+## 必要タスク
+
+- Linter、Formatter、TypeCheckerの設定
+- テスト環境の設定
+- UIライブラリの設定
+- 検索一覧画面の作成
+  - 一覧取得のAPI実装
+  - 一覧画面の作成
+- 詳細画面の作成
+  - 詳細取得のAPI実装
+  - 詳細画面の作成
+- ユニットテスト
+- e2eテスト/
+
+### 検索一覧画面
+
+- 検索フォーム
+- 検索ボタン
+- 検索結果
+  - 検索ボタンを押して一覧取得APIを実行し、結果を表示する
+  - 初回では何も表示しない or 全件取得した結果を表示する
+- 検索結果のページング
+  - 一回の取得件数は5~10件程度で良い
+  - 場合によっては一覧だけスクロールするように実装
+- 一覧検索API
+
+### 詳細画面
+
+- 詳細取得のAPI実装
+  - リポジトリ取得のエンドポイントは`/repos/{owner}/{repo}`を使用する
+  - `owner`と`repo`は一覧取得APIの結果から取得する
+  - Postmanで取得できることを確認済
+- 詳細画面の作成
+  - リポジトリ名
+  - オーナーアイコン
+  - プロジェクト言語
+  - Star 数
+  - Watcher 数
+  - Fork 数
+  - Issue 数
+
+## 任意タスク
+
+- レスポンシブ対応
+- ダークモード
+- アクセシビリティ対応
+- 検索結果の保存
+
+
+## APIの仕様
+
+下記のページを参考にする
+
+[Search repositories](https://docs.github.com/ja/rest/search/search?apiVersion=2026-03-10#search-repositories)
+[Get a repository](https://docs.github.com/ja/rest/repos/repos?apiVersion=2026-03-10#get-a-repository)
