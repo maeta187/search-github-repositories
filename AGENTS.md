@@ -39,4 +39,3 @@ pnpm dlx skills experimental_install  # skills-lock.jsonを元にskillsをイン
 - レビューで修正が必要な場合は修正するのではなく修正案を提示してください。
 - `@rules/`ディレクトリや`@.agents/skills`を参照してレビューしてください。
 - 可読性を損なう修正案やプロジェクトルールから外れる修正案は却下します。
-
