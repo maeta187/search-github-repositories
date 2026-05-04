@@ -1,4 +1,11 @@
-import { UIProvider } from '@/components/ui';
+import { Footer } from '@/app/_components/Footer';
+import { Header } from '@/app/_components/Header';
+import {
+  ColorModeScript,
+  Container,
+  ThemeSchemeScript,
+  UIProvider,
+} from '@/components/ui';
 import type { Metadata } from 'next';
 import { theme } from '../../theme';
 import { config } from '../../theme/config';
@@ -25,10 +32,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="ja" suppressHydrationWarning>
       <body suppressHydrationWarning>
+        <ColorModeScript defaultValue={config.defaultColorMode} />
+        <ThemeSchemeScript defaultValue={config.defaultThemeScheme} />
         <UIProvider theme={theme} config={config}>
-          {children}
+          <Container.Root minH="100dvh">
+            <Header />
+            <Container.Body as="main">{children}</Container.Body>
+            <Footer />
+          </Container.Root>
         </UIProvider>
       </body>
     </html>
