@@ -1,6 +1,8 @@
-import { ColorModeScript, UIProvider } from '@/components/ui';
+import { UIProvider } from '@/components/ui';
 import type { Metadata } from 'next';
-import './globals.css';
+import { theme } from '../../theme';
+import { config } from '../../theme/config';
+// import './globals.css';
 
 // const geistSans = Geist({
 //   variable: '--font-geist-sans',
@@ -25,8 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <ColorModeScript />
-        <UIProvider>{children}</UIProvider>
+        <UIProvider theme={theme} config={config}>
+          {children}
+        </UIProvider>
       </body>
     </html>
   );
