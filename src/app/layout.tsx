@@ -39,7 +39,9 @@ export default function RootLayout({
         <UIProvider theme={theme} config={config}>
           <Container.Root minH="100dvh">
             <Header />
-            <Container.Body as="main">{children}</Container.Body>
+            <Container.Body as="main" gap={{ base: 'lg', md: 'sm' }}>
+              {children}
+            </Container.Body>
             <Footer />
           </Container.Root>
         </UIProvider>
