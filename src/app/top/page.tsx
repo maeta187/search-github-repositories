@@ -1,3 +1,5 @@
-export default function Page() {
-  return <div>Top</div>;
+import { TopContent } from '@/app/top/_components/TopContent';
+
+export default function TopPage() {
+  return <TopContent />;
 }
