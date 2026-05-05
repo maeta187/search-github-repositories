@@ -1,12 +1,12 @@
-export interface FetchRepositoriesQuery {
+export interface FetchRepositoriesDto {
   q: string;
   sort?: 'stars' | 'forks' | 'help-wanted-issues' | 'updated';
   order?: 'asc' | 'desc';
-  per_page?: number;
+  perPage?: number;
   page: number;
 }
 
-export type Repository = {
+export type RepositoryEntity = {
   id: number;
   name: string;
   full_name: string;
@@ -15,8 +15,23 @@ export type Repository = {
   };
 };
 
-export type RepositoryResponse = {
-  items: Repository[];
+export type RepositoryResponseEntity = {
+  items: RepositoryEntity[];
   total_count: number;
   incomplete_results: boolean;
+};
+
+export type Repository = {
+  id: number;
+  name: string;
+  fullName: string;
+  owner: {
+    avatarUrl: string;
+  };
+};
+
+export type RepositoryResponse = {
+  items: Repository[];
+  totalCount: number;
+  incompleteResults: boolean;
 };
