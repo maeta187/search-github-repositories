@@ -1,4 +1,4 @@
-import type { FetchRepositoriesQuery, RepositoryResponse } from '@/types/top';
+import type { FetchRepositoriesDto, RepositoryResponse } from '@/types/top';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fetchRepositories } from './actions';
 
@@ -9,7 +9,7 @@ vi.mock('next/cache', () => ({
 
 const mockFetch = vi.fn();
 
-const baseQuery: FetchRepositoriesQuery = {
+const baseQuery: FetchRepositoriesDto = {
   q: 'foo',
   page: 1,
 };
@@ -48,20 +48,20 @@ describe('fetchRepositories', () => {
     expect(result).toBeDefined();
     // result.itemsがundefinedでないことを確認
     expect(result.items).toBeDefined();
-    // result.total_countが1であることを確認
-    expect(result.total_count).toEqual(1);
-    // result.incomplete_resultsがfalseであることを確認
-    expect(result.incomplete_results).toBeFalsy();
+    // result.totalCountが1であることを確認
+    expect(result.totalCount).toEqual(1);
+    // result.incompleteResultsがfalseであることを確認
+    expect(result.incompleteResults).toBeFalsy();
     // result.items.lengthが1であることを確認
     expect(result.items.length).toEqual(1);
     // result.items[0].idが1であることを確認
     expect(result.items[0].id).toEqual(1);
     // result.items[0].nameがfooであることを確認
     expect(result.items[0].name).toEqual('foo');
-    // result.items[0].full_nameがfoo/barであることを確認
-    expect(result.items[0].full_name).toEqual('foo/bar');
-    // result.items[0].owner.avatar_urlがhttps://example.com/avatar.pngであることを確認
-    expect(result.items[0].owner.avatar_url).toEqual(
+    // result.items[0].fullNameがfoo/barであることを確認
+    expect(result.items[0].fullName).toEqual('foo/bar');
+    // result.items[0].owner.avatarUrlがhttps://example.com/avatar.pngであることを確認
+    expect(result.items[0].owner.avatarUrl).toEqual(
       'https://example.com/avatar.png',
     );
   });
