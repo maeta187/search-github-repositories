@@ -1,6 +1,6 @@
 import { ChangeColorIcon } from '@/app/_components/ChangeColorIcon';
-import { NAV_LINKS } from '@/app/constant/nav-link';
 import { Container, Flex, Heading, Link } from '@/components/ui';
+import { NAV_LINKS } from '@/constant/nav-link';
 
 export const Header = () => {
   return (
