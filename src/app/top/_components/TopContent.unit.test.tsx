@@ -3,10 +3,20 @@ import { userEvent } from '@testing-library/user-event';
 import { forwardRef } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { RepositorySearchForm } from './TopContent';
+import { RepositorySearchForm, RepositorySearchResult } from './TopContent';
 
 // userEventを使用するためのセットアップ
 const user = userEvent.setup();
+
+const mockOnNavigateDetail = vi.fn();
+const mockRepositories = [
+  {
+    id: 1,
+    name: 'foo',
+    fullName: 'foo/bar',
+    owner: { avatarUrl: 'https://example.com/avatar.png' },
+  },
+];
 
 // YamadaUIのコンポーネント、フックをモック化する
 vi.mock('@/components/ui', () => ({
@@ -64,6 +74,44 @@ vi.mock('@/components/ui', () => ({
       ref: React.Ref<HTMLInputElement>,
     ) => <input ref={ref} {...props} />,
   ),
+  VStack: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  Loading: {
+    Circles: ({ color, fontSize }: { color: string; fontSize: string }) => (
+      <div>
+        <span style={{ color, fontSize }}>Loading...</span>
+      </div>
+    ),
+  },
+  List: {
+    Root: ({ children }: { children: React.ReactNode }) => <ul>{children}</ul>,
+    Item: ({
+      children,
+      onClick,
+    }: {
+      children: React.ReactNode;
+      onClick: () => void;
+    }) => (
+      <li>
+        <button type="button" onClick={onClick} data-testid="list-item">
+          {children}
+        </button>
+      </li>
+    ),
+  },
+  Card: {
+    Root: ({ children }: { children: React.ReactNode }) => (
+      <div>{children}</div>
+    ),
+    Body: ({ children }: { children: React.ReactNode }) => (
+      <div>{children}</div>
+    ),
+  },
+  Avatar: ({ name, src }: { name: string; src: string }) => (
+    <img src={src} alt={name} />
+  ),
+  Text: ({ children }: { children: React.ReactNode }) => <p>{children}</p>,
 }));
 
 // FormProvider でラップするヘルパー
@@ -124,5 +172,51 @@ describe('RepositorySearchForm', () => {
     );
     // 検索ボタンが disabled になることを確認する
     expect(screen.getByRole('button', { name: '検索' })).toBeDisabled();
+  });
+});
+
+describe('RepositorySearchResult', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    cleanup();
+  });
+
+  it('isPending=true のときローディングアニメーションが表示される', () => {
+    render(
+      <RepositorySearchResult
+        isPending={true}
+        repositories={[]}
+        onNavigateDetail={vi.fn()}
+      />,
+    );
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
+  });
+
+  it('isPending=false のときローディングアニメーションが表示されない', () => {
+    render(
+      <RepositorySearchResult
+        isPending={false}
+        repositories={[]}
+        onNavigateDetail={vi.fn()}
+      />,
+    );
+    expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+  });
+
+  it('リストをクリックすると onNavigateDetail が呼ばれる', async () => {
+    render(
+      <RepositorySearchResult
+        isPending={false}
+        repositories={mockRepositories}
+        onNavigateDetail={mockOnNavigateDetail}
+      />,
+    );
+    // data-testid="list-item" をクリックする
+    await user.click(screen.getByTestId('list-item'));
+    // onNavigateDetail が1回呼ばれることを確認する
+    expect(mockOnNavigateDetail).toHaveBeenCalledTimes(1);
   });
 });
