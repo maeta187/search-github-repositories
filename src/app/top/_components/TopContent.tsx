@@ -13,9 +13,11 @@ import {
   Text,
   VStack,
 } from '@/components/ui';
+import { NAV_LINKS } from '@/constant/nav-link';
 
 import { fetchRepositories } from '@/features/top/actions';
 import { Repository } from '@/types/top';
+import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import {
   FormProvider,
@@ -33,7 +35,7 @@ interface RepositorySearchFormProps {
 interface RepositorySearchResultProps {
   isPending: boolean;
   repositories: Repository[];
-  onTransitionDetail: (repository: Repository) => void;
+  onNavigateDetail: (repository: Repository) => void;
 }
 
 interface RepositoryListPageNationProps {
@@ -52,6 +54,7 @@ export const TopContent = () => {
   const [totalCount, setTotalCount] = useState<number>(0);
   const [page, setPage] = useState(1);
   const [isPending, startTransition] = useTransition();
+  const { push } = useRouter();
 
   const form = useForm<Inputs>();
   const repositoryName = useWatch({
@@ -76,8 +79,11 @@ export const TopContent = () => {
     });
   };
 
-  // TODO: 詳細画面作成時に実装
-  const handleTransitionDetail = () => {};
+  const handleNavigateDetail = ({ fullName }: Repository) => {
+    push(`${NAV_LINKS.DETAIL}/${fullName}`, {
+      scroll: false,
+    });
+  };
 
   const handleSubmit: SubmitHandler<Inputs> = async (data) => {
     await search(data.repositoryName, page);
@@ -96,7 +102,7 @@ export const TopContent = () => {
       <RepositorySearchResult
         isPending={isPending}
         repositories={repositories}
-        onTransitionDetail={handleTransitionDetail}
+        onNavigateDetail={handleNavigateDetail}
       />
       <RepositoryListPagination
         totalCount={totalCount}
@@ -152,7 +158,7 @@ export const RepositorySearchForm = ({
 export const RepositorySearchResult = ({
   isPending,
   repositories,
-  onTransitionDetail,
+  onNavigateDetail,
 }: RepositorySearchResultProps) => {
   return (
     <VStack w="full" alignItems="center" marginTop="xl">
@@ -175,7 +181,7 @@ export const RepositorySearchResult = ({
               w="11/12"
               cursor="pointer"
               tabIndex={0}
-              onClick={() => onTransitionDetail(repository)}
+              onClick={() => onNavigateDetail(repository)}
             >
               <Card.Root
                 variant="subtle"
