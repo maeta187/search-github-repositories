@@ -13,9 +13,9 @@ import {
   Text,
   VStack,
 } from '@/components/ui';
+import { API_ROUTES } from '@/constant/endpoint';
 import { NAV_LINKS } from '@/constant/nav-link';
 
-import { fetchRepositories } from '@/features/top/actions';
 import { Repository } from '@/types/top';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
@@ -66,14 +66,19 @@ export const TopContent = () => {
   const search = async (name: string, pageNum: number) => {
     startTransition(async () => {
       try {
-        const result = await fetchRepositories({ q: name, page: pageNum });
+        const response = await fetch(
+          `${API_ROUTES.SEARCH_REPOSITORIES}/${name}/${pageNum}`,
+        );
+        if (!response.ok) {
+          const error: { error: string } = await response.json();
+          throw new Error(error.error);
+        }
+        const result = await response.json();
         setRepositories(result.items);
         setTotalCount(result.totalCount);
       } catch (error) {
         if (error instanceof Error) {
-          throw new Error(error.message, { cause: error.cause });
-        } else {
-          console.error(error);
+          console.error(error.message);
         }
       }
     });

@@ -1,12 +1,11 @@
-export interface FetchRepositoriesDto {
+export interface FetchRepositoriesParams {
   q: string;
-  sort?: 'stars' | 'forks' | 'help-wanted-issues' | 'updated';
-  order?: 'asc' | 'desc';
-  perPage?: number;
   page: number;
 }
 
-export type RepositoryEntity = {
+export type RepositoriesParams = Promise<FetchRepositoriesParams>;
+
+export type RepositoryResponse = {
   id: number;
   name: string;
   full_name: string;
@@ -15,8 +14,8 @@ export type RepositoryEntity = {
   };
 };
 
-export type RepositoryResponseEntity = {
-  items: RepositoryEntity[];
+export type RepositoryListResponse = {
+  items: RepositoryResponse[];
   total_count: number;
   incomplete_results: boolean;
 };
@@ -30,7 +29,7 @@ export type Repository = {
   };
 };
 
-export type RepositoryResponse = {
+export type RepositoryList = {
   items: Repository[];
   totalCount: number;
   incompleteResults: boolean;

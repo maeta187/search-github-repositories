@@ -1,20 +1,21 @@
 import type { ComponentType, SVGProps } from 'react';
 
-export type RepositoryDetailParams = Promise<{ owner: string; repo: string }>;
+export interface FetchRepositoryDetailParams {
+  owner: string;
+  repo: string;
+}
 
-export type OwnerEntity = {
+export type RepositoryDetailParams = Promise<FetchRepositoryDetailParams>;
+
+export type OwnerResponse = {
   avatar_url: string;
 };
 
-export type Owner = {
-  avatarUrl: string;
-};
-
-export type RepositoryDetailEntity = {
+export type RepositoryDetailResponse = {
   id: number;
   name: string;
   full_name: string;
-  owner: OwnerEntity;
+  owner: OwnerResponse;
   language: string;
   stargazers_count: number;
   watchers_count: number;
