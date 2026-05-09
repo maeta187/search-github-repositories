@@ -9,9 +9,9 @@
   - ~~一覧取得のAPI実装~~
     - 残課題: APIの実行をServer Actionで行うように実装してしまったため、検索でもPOSTメソッドで実行されているようになっているので、時間があれば修正する。
   - ~~一覧画面の作成~~
-- 詳細画面の作成
-  - 詳細取得のAPI実装
-  - 詳細画面の作成
+- ~~詳細画面の作成~~
+  - ~~詳細取得のAPI実装~~
+  - ~~詳細画面の作成~~
 - ユニットテスト
 - e2eテスト/
 
@@ -29,18 +29,18 @@
 
 ### 詳細画面
 
-- 詳細取得のAPI実装
-  - リポジトリ取得のエンドポイントは`/repos/{owner}/{repo}`を使用する
-  - `owner`と`repo`は一覧取得APIの結果から取得する
-  - Postmanで取得できることを確認済
-- 詳細画面の作成
-  - リポジトリ名
-  - オーナーアイコン
-  - プロジェクト言語
-  - Star 数
-  - Watcher 数
-  - Fork 数
-  - Issue 数
+- ~~詳細取得のAPI実装~~
+  - ~~リポジトリ取得のエンドポイントは`/repos/{owner}/{repo}`を使用する~~
+  - ~~`owner`と`repo`は一覧取得APIの結果から取得する~~
+  - ~~Postmanで取得できることを確認済~~
+- ~~詳細画面の作成~~
+  - ~~リポジトリ名~~
+  - ~~オーナーアイコン~~
+  - ~~プロジェクト言語~~
+  - ~~Star 数~~
+  - ~~Watcher 数~~
+  - ~~Fork 数~~
+  - ~~Issue 数~~
 
 ## 任意タスク
 
@@ -56,5 +56,5 @@
 
 下記のページを参考にする
 
-[Search repositories](https://docs.github.com/ja/rest/search/search?apiVersion=2026-03-10#search-repositories)
-[Get a repository](https://docs.github.com/ja/rest/repos/repos?apiVersion=2026-03-10#get-a-repository)
+- [Search repositories](https://docs.github.com/ja/rest/search/search?apiVersion=2026-03-10#search-repositories)
+- [Get a repository](https://docs.github.com/ja/rest/repos/repos?apiVersion=2026-03-10#get-a-repository)
