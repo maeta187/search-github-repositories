@@ -1,10 +1,27 @@
-import { FIND_ONE_REPOSITORY_ENDPOINT } from '@/constant/endpoint';
+import { API_ROUTES } from '@/constant/endpoint';
+import { fetchRepositoryDetail } from '@/features/detail/service';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { GET } from './route';
 
 const mockFetch = vi.fn();
 
-const detailParams = Promise.resolve({ owner: 'facebook', repo: 'react' });
+const mockParams = Promise.resolve({ owner: 'facebook', repo: 'react' });
+
+const mockResponse = {
+  id: 1,
+  name: 'react',
+  fullName: 'facebook/react',
+  avatarUrl: 'https://avatars.example/u/1',
+  language: 'TypeScript',
+  stargazersCount: 10,
+  watchersCount: 20,
+  forksCount: 30,
+  openIssuesCount: 5,
+};
+
+vi.mock('@/features/detail/service', () => ({
+  fetchRepositoryDetail: vi.fn(),
+}));
 
 describe('GET /api/detail/[owner]/[repo]', () => {
   beforeEach(() => {
@@ -18,59 +35,38 @@ describe('GET /api/detail/[owner]/[repo]', () => {
     vi.unstubAllGlobals();
   });
 
-  it('リポジトリーの取得に成功する', async () => {
-    const mockEntity = {
-      id: 1,
-      name: 'react',
-      full_name: 'facebook/react',
-      owner: { avatar_url: 'https://avatars.example/u/1' },
-      language: 'TypeScript',
-      stargazers_count: 10,
-      watchers_count: 20,
-      forks_count: 30,
-      open_issues_count: 5,
-    };
-    mockFetch.mockResolvedValue({
-      ok: true,
-      json: vi.fn().mockResolvedValue(mockEntity),
-    });
-
+  it('リポジトリーの詳細取得に成功する', async () => {
+    vi.mocked(fetchRepositoryDetail).mockResolvedValue(mockResponse);
+    const { owner, repo } = await mockParams;
     const request = new Request(
-      `${FIND_ONE_REPOSITORY_ENDPOINT}/facebook/react`,
+      `${API_ROUTES.REPOSITORY_DETAIL}/${owner}/${repo}`,
     );
-    const response = await GET(request, { params: detailParams });
+    const response = await GET(request, { params: mockParams });
     // responseが200であることを確認
     expect(response.status).toBe(200);
     // responseがokがtrueであることを確認
     expect(response.ok).toBeTruthy();
     const data = await response.json();
-    // dataがキャメルケースのオブジェクトであることを確認
-    expect(data).toEqual({
-      id: 1,
-      name: 'react',
-      fullName: 'facebook/react',
-      avatarUrl: 'https://avatars.example/u/1',
-      language: 'TypeScript',
-      stargazersCount: 10,
-      watchersCount: 20,
-      forksCount: 30,
-      openIssuesCount: 5,
-    });
+    // dataがmockResponseと一致することを確認
+    expect(data).toEqual(mockResponse);
   });
 
-  it('リポジトリーの取得に失敗する', async () => {
-    mockFetch.mockResolvedValue({ ok: false, status: 404 });
-
-    const request = new Request(
-      `${FIND_ONE_REPOSITORY_ENDPOINT}/facebook/react`,
+  it('リポジトリーの詳細取得に失敗する', async () => {
+    vi.mocked(fetchRepositoryDetail).mockRejectedValue(
+      new Error('リポジトリーの詳細取得に失敗しました'),
     );
-    const response = await GET(request, { params: detailParams });
 
-    // responseが404であることを確認
-    expect(response.status).toBe(404);
+    const { owner, repo } = await mockParams;
+    const request = new Request(
+      `${API_ROUTES.REPOSITORY_DETAIL}/${owner}/${repo}`,
+    );
+    const response = await GET(request, { params: mockParams });
+    // responseが500であることを確認
+    expect(response.status).toBe(500);
     // responseがokがfalseであることを確認
-    expect(response.ok).toBe(false);
-    const errorData = await response.json();
-    expect(errorData).toEqual({ error: 'リポジトリーの取得に失敗しました' });
+    expect(response.ok).toBeFalsy();
+    const data = await response.json();
+    // dataがmock化したエラーメッセージと一致することを確認
+    expect(data).toEqual({ error: 'リポジトリーの詳細取得に失敗しました' });
   });
 });
