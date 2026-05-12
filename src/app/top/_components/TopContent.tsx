@@ -172,51 +172,53 @@ export const RepositorySearchResult = ({
           <Loading.Circles color="cyan.500" fontSize="6xl" />
         </VStack>
       ) : (
-        <List.Root
-          w={{ base: '7/12', md: 'full' }}
-          gap="xl"
-          paddingY="sm"
-          overflowY="auto"
-          maxHeight="60vh"
-          alignItems="center"
-        >
-          {repositories.map((repository) => (
-            <List.Item
-              key={repository.id}
-              w="11/12"
-              cursor="pointer"
-              tabIndex={0}
-              onClick={() => onNavigateDetail(repository)}
-            >
-              <Card.Root
-                variant="subtle"
-                paddingY="md"
-                paddingX="xl"
-                borderRadius="2xl"
+        repositories.length > 0 && (
+          <List.Root
+            w={{ base: '7/12', md: 'full' }}
+            gap="xl"
+            paddingY="sm"
+            overflowY="auto"
+            maxHeight="60vh"
+            alignItems="center"
+          >
+            {repositories.map((repository) => (
+              <List.Item
+                key={repository.id}
+                w="11/12"
+                cursor="pointer"
+                tabIndex={0}
+                onClick={() => onNavigateDetail(repository)}
               >
-                <Card.Body
-                  display="flex"
-                  flexDirection="row"
-                  gap={{ base: 'sxl', md: 'md' }}
-                  alignItems="center"
+                <Card.Root
+                  variant="subtle"
+                  paddingY="md"
+                  paddingX="xl"
+                  borderRadius="2xl"
                 >
-                  <Avatar
-                    size="lg"
-                    name={repository.fullName}
-                    src={repository.owner.avatarUrl}
-                  />
-                  <Text
-                    as="p"
-                    fontSize={{ base: '2xl', md: 'md' }}
-                    fontWeight="bold"
+                  <Card.Body
+                    display="flex"
+                    flexDirection="row"
+                    gap={{ base: 'sxl', md: 'md' }}
+                    alignItems="center"
                   >
-                    {repository.name}
-                  </Text>
-                </Card.Body>
-              </Card.Root>
-            </List.Item>
-          ))}
-        </List.Root>
+                    <Avatar
+                      size="lg"
+                      name={repository.fullName}
+                      src={repository.owner.avatarUrl}
+                    />
+                    <Text
+                      as="p"
+                      fontSize={{ base: '2xl', md: 'md' }}
+                      fontWeight="bold"
+                    >
+                      {repository.name}
+                    </Text>
+                  </Card.Body>
+                </Card.Root>
+              </List.Item>
+            ))}
+          </List.Root>
+        )
       )}
     </VStack>
   );
