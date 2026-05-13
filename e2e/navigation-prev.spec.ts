@@ -1,7 +1,6 @@
 import { expect, test } from '@playwright/test';
 
 test('ページネーションのテスト : prev', async ({ page }) => {
-  // Recording...
   await page.goto('/top');
   await expect(page.getByRole('navigation')).not.toBeVisible();
   await page.getByRole('textbox', { name: 'Repository Name' }).click();

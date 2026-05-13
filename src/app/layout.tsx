@@ -32,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" suppressHydrationWarning>
+    <html lang="ja" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body suppressHydrationWarning>
         <ColorModeScript defaultValue={config.defaultColorMode} />
         <ThemeSchemeScript defaultValue={config.defaultThemeScheme} />

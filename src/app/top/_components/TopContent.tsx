@@ -1,5 +1,6 @@
 'use client';
 
+import { ErrorText } from '@/app/top/_components/ErrorText';
 import {
   Avatar,
   Card,
@@ -49,10 +50,14 @@ type Inputs = {
   repositoryName: string;
 };
 
+const INIT_TOTAL_COUNT = 0;
+const INIT_PAGE = 1;
+
 export const TopContent = () => {
-  const [repositories, setRepositories] = useState<Repository[]>([]);
-  const [totalCount, setTotalCount] = useState<number>(0);
-  const [page, setPage] = useState(1);
+  const [repositories, setRepositories] = useState<Repository[] | null>(null);
+  const [totalCount, setTotalCount] = useState<number>(INIT_TOTAL_COUNT);
+  const [page, setPage] = useState(INIT_PAGE);
+  const [errorFlag, setErrorFlag] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
   const { push } = useRouter();
 
@@ -76,22 +81,21 @@ export const TopContent = () => {
         const result = await response.json();
         setRepositories(result.items);
         setTotalCount(result.totalCount);
+        setErrorFlag(false);
       } catch (error) {
-        if (error instanceof Error) {
-          console.error(error.message);
-        }
+        console.error(error);
+        setErrorFlag(true);
       }
     });
   };
 
   const handleNavigateDetail = ({ fullName }: Repository) => {
-    push(`${NAV_LINKS.DETAIL}/${fullName}`, {
-      scroll: false,
-    });
+    push(`${NAV_LINKS.DETAIL}/${fullName}`);
   };
 
   const handleSubmit: SubmitHandler<Inputs> = async (data) => {
-    await search(data.repositoryName, page);
+    setPage(INIT_PAGE);
+    await search(data.repositoryName, INIT_PAGE);
   };
 
   const handlePageChange = async (value: number) => {
@@ -104,17 +108,27 @@ export const TopContent = () => {
       <FormProvider {...form}>
         <RepositorySearchForm isPending={isPending} onSubmit={handleSubmit} />
       </FormProvider>
-      <RepositorySearchResult
-        isPending={isPending}
-        repositories={repositories}
-        onNavigateDetail={handleNavigateDetail}
-      />
-      <RepositoryListPagination
-        totalCount={totalCount}
-        page={page}
-        isPending={isPending}
-        onPageChange={handlePageChange}
-      />
+      {errorFlag ? (
+        <ErrorText repositoryNotFound={false} />
+      ) : repositories !== null && repositories.length === 0 ? (
+        <ErrorText repositoryNotFound={true} />
+      ) : (
+        repositories !== null && (
+          <>
+            <RepositorySearchResult
+              isPending={isPending}
+              repositories={repositories}
+              onNavigateDetail={handleNavigateDetail}
+            />
+            <RepositoryListPagination
+              totalCount={totalCount}
+              page={page}
+              isPending={isPending}
+              onPageChange={handlePageChange}
+            />
+          </>
+        )
+      )}
     </>
   );
 };

@@ -5,7 +5,7 @@ import { GET } from './route';
 
 const mockFetch = vi.fn();
 
-const mockParams = Promise.resolve({ q: 'React', page: 1 });
+const mockParams = Promise.resolve({ q: 'React', page: '1' });
 
 const mockResponse = {
   id: 1,

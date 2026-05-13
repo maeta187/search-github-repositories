@@ -14,7 +14,7 @@ export const ErrorText = () => {
       gap="md"
     >
       <HStack alignItems="center" justifyContent="center">
-        <Icon as={AlertCircle} aria-hidden />
+        <Icon as={AlertCircle} color="red" aria-hidden />
         <Text as="p">
           エラーが発生しました。
           <br />
