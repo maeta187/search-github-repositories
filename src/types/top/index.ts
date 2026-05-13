@@ -1,6 +1,6 @@
 export interface FetchRepositoriesParams {
   q: string;
-  page: number;
+  page: string;
 }
 
 export type RepositoriesParams = Promise<FetchRepositoriesParams>;

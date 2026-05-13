@@ -3,7 +3,7 @@ import { fetchRepositories } from './service';
 
 const mockFetch = vi.fn();
 
-const mockArgs = { q: 'React', page: 1 };
+const mockArgs = { q: 'React', page: '1' };
 
 const mockResponseItem = {
   id: 1,

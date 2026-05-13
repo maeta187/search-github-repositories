@@ -23,7 +23,7 @@ export async function fetchRepositories({
 
   const queryString = new URLSearchParams({
     q,
-    page: String(page),
+    page,
     sort: SORT,
     order: ORDER,
     per_page: String(PER_PAGE),
@@ -42,7 +42,7 @@ export async function fetchRepositories({
   if (!response.ok) {
     const error = await response.json();
     throw new Error(error.message ?? 'APIリクエスト中にエラーが発生しました', {
-      cause: response,
+      cause: error,
     });
   }
 
