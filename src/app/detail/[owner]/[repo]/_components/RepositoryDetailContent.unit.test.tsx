@@ -24,6 +24,9 @@ vi.mock('next/cache', () => ({
 }));
 
 vi.mock('@/components/ui', () => ({
+  VStack: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
   Box: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
   Card: {
     Root: ({ children }: { children: React.ReactNode }) => (
@@ -49,8 +52,13 @@ vi.mock('@/app/detail/[owner]/[repo]/_components/RepositoryDetailItem', () => ({
 }));
 
 // ErrorTextコンポーネントをモック化する
-vi.mock('@/app/_components/ErrorText', () => ({
+vi.mock('@/app/detail/[owner]/[repo]/_components/ErrorText', () => ({
   ErrorText: () => <div>Error</div>,
+}));
+
+// BackButtonコンポーネントをモック化する
+vi.mock('@/app/detail/[owner]/[repo]/_components/BackButton', () => ({
+  BackButton: () => <div>Back</div>,
 }));
 
 describe('RepositoryDetailContent', () => {

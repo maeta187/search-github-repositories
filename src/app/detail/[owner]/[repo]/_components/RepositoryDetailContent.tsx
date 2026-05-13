@@ -1,9 +1,10 @@
-import { ErrorText } from '@/app/_components/ErrorText';
+import { BackButton } from '@/app/detail/[owner]/[repo]/_components/BackButton';
+import { ErrorText } from '@/app/detail/[owner]/[repo]/_components/ErrorText';
 import {
   RepositoryDetailHeader,
   RepositoryDetailItemArea,
 } from '@/app/detail/[owner]/[repo]/_components/RepositoryDetailItem';
-import { Box, Card } from '@/components/ui';
+import { Box, Card, VStack } from '@/components/ui';
 import { API_ROUTES } from '@/constant/endpoint';
 import type { RepositoryDetail, RepositoryDetailParams } from '@/types/detail';
 import { cacheLife } from 'next/cache';
@@ -26,7 +27,7 @@ export const RepositoryDetailContent = async ({
   }
   const data: RepositoryDetail = await response.json();
   return (
-    <Box w="full" display="flex" justifyContent="center">
+    <VStack w="full" justifyContent="center" alignItems="center">
       <Card.Root
         w={{ base: '8/12', lg: 'full' }}
         variant="subtle"
@@ -43,6 +44,13 @@ export const RepositoryDetailContent = async ({
           <RepositoryDetailItemArea data={data} />
         </Card.Body>
       </Card.Root>
-    </Box>
+      <Box
+        w={{ base: '8/12', lg: 'full' }}
+        display="flex"
+        justifyContent="flex-end"
+      >
+        <BackButton />
+      </Box>
+    </VStack>
   );
 };
