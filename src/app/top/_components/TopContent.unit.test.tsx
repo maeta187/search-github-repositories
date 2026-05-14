@@ -112,6 +112,10 @@ vi.mock('@/components/ui', () => ({
     <img src={src} alt={name} />
   ),
   Text: ({ children }: { children: React.ReactNode }) => <p>{children}</p>,
+  ClientOnly: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  Skeleton: () => <div>Skeleton</div>,
 }));
 
 // FormProvider でラップするヘルパー
