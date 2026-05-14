@@ -4,6 +4,7 @@ import { ErrorText } from '@/app/top/_components/ErrorText';
 import {
   Avatar,
   Card,
+  ClientOnly,
   extractObject,
   Field,
   Form,
@@ -11,6 +12,7 @@ import {
   List,
   Loading,
   Pagination,
+  Skeleton,
   Text,
   VStack,
 } from '@/components/ui';
@@ -151,24 +153,33 @@ export const RepositorySearchForm = ({
     >
       <Form.Body
         display="flex"
-        flexDirection="row"
+        flexDirection={{ base: 'row', sm: 'column' }}
         gap="xl"
         justifyContent="center"
-        alignItems={'baseline'}
+        alignItems={{ base: 'baseline', sm: 'anchor-center' }}
       >
-        <Form.Group w="4/12">
+        <Form.Group w={{ base: '4/12', md: '5/12', sm: 'full' }}>
           <Field.Root name="repositoryName" label="">
-            <Input
-              placeholder="Repository Name"
-              {...register('repositoryName', {
-                required: { message: 'リポジトリ名は必須です', value: true },
-              })}
-            />
+            <ClientOnly fallback={<Skeleton />}>
+              <Input
+                placeholder="Repository Name"
+                {...register('repositoryName', {
+                  required: { message: 'リポジトリ名は必須です', value: true },
+                })}
+              />
+            </ClientOnly>
           </Field.Root>
         </Form.Group>
-        <Form.SubmitButton w={'1/12'} disabled={isPending}>
-          検索
-        </Form.SubmitButton>
+        <ClientOnly
+          fallback={<Skeleton w={{ base: '1/12', md: '2/12', sm: '5/12' }} />}
+        >
+          <Form.SubmitButton
+            w={{ base: '1/12', md: '2/12', sm: '5/12' }}
+            disabled={isPending}
+          >
+            検索
+          </Form.SubmitButton>
+        </ClientOnly>
       </Form.Body>
     </Form.Root>
   );

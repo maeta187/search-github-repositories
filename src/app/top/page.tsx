@@ -2,7 +2,7 @@ import { TopContent } from '@/app/top/_components/TopContent';
 import { Loading, VStack } from '@/components/ui';
 import { Suspense } from 'react';
 
-export default function TopPage() {
+export default function Page() {
   return (
     <Suspense
       fallback={

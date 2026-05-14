@@ -5,4 +5,5 @@ ignoredBuiltDependencies:
 overrides:
   axios: 1.15.2 # 3月に発生したさサプライチェーン攻撃を踏まえてバージョンを固定(間接依存も含めて)
 
+ignore-scripts: true # パッケージをインストールするときにスクリプトを実行しない
 minimumReleaseAge: 10080 # 公開されてから7日経ったパッケージを入れる
