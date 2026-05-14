@@ -11,11 +11,11 @@ export const ErrorText = () => {
       flex="1"
       alignItems="center"
       justifyContent="center"
-      gap="md"
+      gap="ld"
     >
       <HStack alignItems="center" justifyContent="center">
         <Icon as={AlertCircle} color="red" aria-hidden />
-        <Text as="p">
+        <Text as="p" fontSize={{ base: 'md', md: 'sm' }}>
           エラーが発生しました。
           <br />
           検索画面から再度検索を行ってください。

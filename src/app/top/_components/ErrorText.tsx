@@ -25,7 +25,7 @@ export const ErrorText = ({ repositoryNotFound }: ErrorTextProps) => {
           color={repositoryNotFound ? 'yellow' : 'red'}
           aria-hidden
         />
-        <Text as="p">
+        <Text as="p" fontSize={{ base: 'md', md: 'sm' }}>
           {message}
           <br />
           再度検索を行ってください。

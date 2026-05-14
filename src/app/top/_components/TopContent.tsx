@@ -151,12 +151,12 @@ export const RepositorySearchForm = ({
     >
       <Form.Body
         display="flex"
-        flexDirection="row"
+        flexDirection={{ base: 'row', sm: 'column' }}
         gap="xl"
         justifyContent="center"
-        alignItems={'baseline'}
+        alignItems={{ base: 'baseline', sm: 'anchor-center' }}
       >
-        <Form.Group w="4/12">
+        <Form.Group w={{ base: '4/12', md: '5/12', sm: 'full' }}>
           <Field.Root name="repositoryName" label="">
             <Input
               placeholder="Repository Name"
@@ -166,7 +166,10 @@ export const RepositorySearchForm = ({
             />
           </Field.Root>
         </Form.Group>
-        <Form.SubmitButton w={'1/12'} disabled={isPending}>
+        <Form.SubmitButton
+          w={{ base: '1/12', md: '2/12', sm: '5/12' }}
+          disabled={isPending}
+        >
           検索
         </Form.SubmitButton>
       </Form.Body>
