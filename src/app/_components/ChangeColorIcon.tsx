@@ -19,21 +19,21 @@ export const ChangeColorIcon = () => {
     <ClientOnly fallback={<SkeletonCircle boxSize="9" rounded="l2" />}>
       {colorMode === 'light' ? (
         <IconButton
-          as={Moon}
+          icon={<Moon aria-hidden />}
           onClick={toggleColorMode}
           variant="ghost"
           fullRounded
           size="sm"
-          aria-label="ダークモード"
+          aria-label="ダークモードへ切り替える"
         />
       ) : (
         <IconButton
-          as={Sun}
+          icon={<Sun aria-hidden />}
           onClick={toggleColorMode}
           variant="ghost"
           fullRounded
           size="sm"
-          aria-label="ライトモード"
+          aria-label="ライトモードへ切り替える"
         />
       )}
     </ClientOnly>

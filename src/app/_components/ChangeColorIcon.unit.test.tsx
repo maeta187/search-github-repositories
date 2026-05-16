@@ -42,7 +42,7 @@ describe('ChangeColorIcon', () => {
     render(<ChangeColorIcon />);
     // ダークモード切替ボタンが表示されていることを確認する
     expect(
-      screen.getByRole('button', { name: 'ダークモード' }),
+      screen.getByRole('button', { name: 'ダークモードへ切り替える' }),
     ).toBeInTheDocument();
   });
 
@@ -58,7 +58,7 @@ describe('ChangeColorIcon', () => {
     render(<ChangeColorIcon />);
     // ダークモード切替ボタンが表示されていることを確認する
     expect(
-      screen.getByRole('button', { name: 'ライトモード' }),
+      screen.getByRole('button', { name: 'ライトモードへ切り替える' }),
     ).toBeInTheDocument();
   });
 
@@ -75,7 +75,9 @@ describe('ChangeColorIcon', () => {
     const { toggleColorMode } = useColorMode();
     // 実行前にtoggleColorModeが0回呼ばれていることを確認する
     expect(toggleColorMode).toHaveBeenCalledTimes(0);
-    const button = screen.getByRole('button', { name: 'ダークモード' });
+    const button = screen.getByRole('button', {
+      name: 'ダークモードへ切り替える',
+    });
     // ダークモード/ライトモード切替ボタンをクリックする
     await user.click(button);
     // toggleColorModeが1回呼ばれていることを確認する
