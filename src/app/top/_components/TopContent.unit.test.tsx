@@ -116,6 +116,9 @@ vi.mock('@/components/ui', () => ({
     <div>{children}</div>
   ),
   Skeleton: () => <div>Skeleton</div>,
+  VisuallyHidden: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
 }));
 
 // FormProvider でラップするヘルパー

@@ -20,7 +20,10 @@ test('リポジトリーの詳細画面に遷移する', async ({ page }) => {
   await expect(
     page.getByText('react', { exact: true }).filter({ visible: true }),
   ).toBeVisible();
-  await expect(page.getByLabel('Star数')).toBeVisible();
+
+  // 「Star数」が表示されることを確認
+  const starItem = page.getByRole('listitem').filter({ hasText: 'Star数' });
+  await expect(starItem).toBeVisible();
 });
 
 test('存在しないリポジトリーの詳細画面に遷移した場合', async ({ page }) => {
