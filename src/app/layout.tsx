@@ -33,13 +33,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" data-scroll-behavior="smooth" suppressHydrationWarning>
-      <body suppressHydrationWarning>
+      <body
+        style={{ height: '100%', margin: 0, overflow: 'hidden' }}
+        suppressHydrationWarning
+      >
         <ColorModeScript defaultValue={config.defaultColorMode} />
         <ThemeSchemeScript defaultValue={config.defaultThemeScheme} />
         <UIProvider theme={theme} config={config}>
-          <Container.Root minH="100dvh">
+          <Container.Root
+            h="100dvh"
+            display="flex"
+            flexDirection="column"
+            overflow="hidden"
+          >
             <Header />
-            <Container.Body as="main" gap={{ base: 'lg', md: 'sm' }}>
+            <Container.Body
+              as="main"
+              gap={{ base: 'lg', md: 'sm', sm: '' }}
+              flex="1"
+              minH="0"
+              overflow="hidden"
+            >
               {children}
             </Container.Body>
             <Footer />

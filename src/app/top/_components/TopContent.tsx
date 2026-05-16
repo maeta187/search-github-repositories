@@ -14,6 +14,7 @@ import {
   Pagination,
   Skeleton,
   Text,
+  VisuallyHidden,
   VStack,
 } from '@/components/ui';
 import { API_ROUTES } from '@/constant/endpoint';
@@ -21,7 +22,7 @@ import { NAV_LINKS } from '@/constant/nav-link';
 
 import { Repository } from '@/types/top';
 import { useRouter } from 'next/navigation';
-import { useState, useTransition } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 import {
   FormProvider,
   SubmitHandler,
@@ -91,7 +92,8 @@ export const TopContent = () => {
     });
   };
 
-  const handleNavigateDetail = ({ fullName }: Repository) => {
+  const handleNavigateDetail = ({ fullName, id }: Repository) => {
+    sessionStorage.setItem('lastClickedRepoId', id.toString());
     push(`${NAV_LINKS.DETAIL}/${fullName}`);
   };
 
@@ -106,7 +108,7 @@ export const TopContent = () => {
   };
 
   return (
-    <>
+    <VStack w="full" flex="1" minH="0" overflow="hidden">
       <FormProvider {...form}>
         <RepositorySearchForm isPending={isPending} onSubmit={handleSubmit} />
       </FormProvider>
@@ -131,7 +133,7 @@ export const TopContent = () => {
           </>
         )
       )}
-    </>
+    </VStack>
   );
 };
 
@@ -153,7 +155,7 @@ export const RepositorySearchForm = ({
     >
       <Form.Body
         display="flex"
-        flexDirection={{ base: 'row', sm: 'column' }}
+        flexDirection="row"
         gap="xl"
         justifyContent="center"
         alignItems={{ base: 'baseline', sm: 'anchor-center' }}
@@ -190,8 +192,25 @@ export const RepositorySearchResult = ({
   repositories,
   onNavigateDetail,
 }: RepositorySearchResultProps) => {
+  const itemRefs = useRef<Map<number, HTMLLIElement>>(new Map());
+
+  // 詳細ページから戻ってきた時にフォーカスを戻す
+  useEffect(() => {
+    // セッションストレージから最後にクリックしたリポジトリーのIDを取得
+    const savedId = sessionStorage.getItem('lastClickedRepoId');
+    if (!savedId) return;
+
+    const focusElement = itemRefs.current.get(Number(savedId));
+
+    if (focusElement) {
+      focusElement.focus();
+      // セッションストレージから最後にクリックしたリポジトリーのIDを削除
+      sessionStorage.removeItem('lastClickedRepoId');
+    }
+  }, []);
+
   return (
-    <VStack w="full" alignItems="center" marginTop="xl">
+    <VStack w="full" flex="1" minH="0" alignItems="center">
       {isPending ? (
         <VStack w="full" alignItems="center" marginTop="xl">
           <Loading.Circles color="cyan.500" fontSize="6xl" />
@@ -200,11 +219,12 @@ export const RepositorySearchResult = ({
         repositories.length > 0 && (
           <List.Root
             w={{ base: '7/12', md: 'full' }}
+            flex="1"
+            minH="0"
             gap="xl"
             paddingY="sm"
-            overflowY="auto"
-            maxHeight="60vh"
             alignItems="center"
+            overflowY="auto"
           >
             {repositories.map((repository) => (
               <List.Item
@@ -212,24 +232,40 @@ export const RepositorySearchResult = ({
                 w="11/12"
                 cursor="pointer"
                 tabIndex={0}
+                aria-labelledby={repository.id.toString()}
                 onClick={() => onNavigateDetail(repository)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    onNavigateDetail(repository);
+                  }
+                }}
+                ref={(el) => {
+                  if (el) {
+                    itemRefs.current.set(repository.id, el);
+                  } else {
+                    itemRefs.current.delete(repository.id);
+                  }
+                }}
               >
                 <Card.Root
                   variant="subtle"
-                  paddingY="md"
-                  paddingX="xl"
+                  paddingY={{ base: 'md', sm: 'sm' }}
+                  paddingX={{ base: 'xl', sm: 'md' }}
                   borderRadius="2xl"
                 >
                   <Card.Body
                     display="flex"
                     flexDirection="row"
-                    gap={{ base: 'sxl', md: 'md' }}
+                    gap={{ base: 'xl', md: 'md' }}
                     alignItems="center"
                   >
                     <Avatar
                       size="lg"
                       name={repository.fullName}
                       src={repository.owner.avatarUrl}
+                      alt={repository.fullName}
+                      aria-hidden="true"
                     />
                     <Text
                       as="p"
@@ -240,6 +276,16 @@ export const RepositorySearchResult = ({
                     </Text>
                   </Card.Body>
                 </Card.Root>
+                <VisuallyHidden>
+                  <Text
+                    as="p"
+                    fontSize="sm"
+                    id={repository.id.toString()}
+                    aria-hidden="true"
+                  >
+                    {`${repository.name}の詳細ページへ遷移する`}
+                  </Text>
+                </VisuallyHidden>
               </List.Item>
             ))}
           </List.Root>
@@ -256,7 +302,7 @@ export const RepositoryListPagination = ({
   onPageChange,
 }: RepositoryListPageNationProps) => {
   return (
-    <VStack w="full" alignItems="center" marginTop="xl" overflowX="auto">
+    <VStack w="full" alignItems="center" overflowX="auto">
       {totalCount > 1 && !isPending && (
         <Pagination.Root
           total={totalCount}
