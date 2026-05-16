@@ -14,6 +14,7 @@ import {
   Pagination,
   Skeleton,
   Text,
+  VisuallyHidden,
   VStack,
 } from '@/components/ui';
 import { API_ROUTES } from '@/constant/endpoint';
@@ -21,7 +22,7 @@ import { NAV_LINKS } from '@/constant/nav-link';
 
 import { Repository } from '@/types/top';
 import { useRouter } from 'next/navigation';
-import { useState, useTransition } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 import {
   FormProvider,
   SubmitHandler,
@@ -107,7 +108,7 @@ export const TopContent = () => {
   };
 
   return (
-    <>
+    <VStack w="full" flex="1" minH="0" overflow="hidden">
       <FormProvider {...form}>
         <RepositorySearchForm isPending={isPending} onSubmit={handleSubmit} />
       </FormProvider>
@@ -132,7 +133,7 @@ export const TopContent = () => {
           </>
         )
       )}
-    </>
+    </VStack>
   );
 };
 
@@ -154,7 +155,7 @@ export const RepositorySearchForm = ({
     >
       <Form.Body
         display="flex"
-        flexDirection={{ base: 'row', sm: 'column' }}
+        flexDirection="row"
         gap="xl"
         justifyContent="center"
         alignItems={{ base: 'baseline', sm: 'anchor-center' }}
@@ -209,7 +210,7 @@ export const RepositorySearchResult = ({
   }, []);
 
   return (
-    <VStack w="full" alignItems="center" marginTop="xl">
+    <VStack w="full" flex="1" minH="0" alignItems="center">
       {isPending ? (
         <VStack w="full" alignItems="center" marginTop="xl">
           <Loading.Circles color="cyan.500" fontSize="6xl" />
@@ -218,11 +219,12 @@ export const RepositorySearchResult = ({
         repositories.length > 0 && (
           <List.Root
             w={{ base: '7/12', md: 'full' }}
+            flex="1"
+            minH="0"
             gap="xl"
             paddingY="sm"
-            overflowY="auto"
-            maxHeight="60vh"
             alignItems="center"
+            overflowY="auto"
           >
             {repositories.map((repository) => (
               <List.Item
@@ -248,14 +250,14 @@ export const RepositorySearchResult = ({
               >
                 <Card.Root
                   variant="subtle"
-                  paddingY="md"
-                  paddingX="xl"
+                  paddingY={{ base: 'md', sm: 'sm' }}
+                  paddingX={{ base: 'xl', sm: 'md' }}
                   borderRadius="2xl"
                 >
                   <Card.Body
                     display="flex"
                     flexDirection="row"
-                    gap={{ base: 'sxl', md: 'md' }}
+                    gap={{ base: 'xl', md: 'md' }}
                     alignItems="center"
                   >
                     <Avatar
@@ -300,7 +302,7 @@ export const RepositoryListPagination = ({
   onPageChange,
 }: RepositoryListPageNationProps) => {
   return (
-    <VStack w="full" alignItems="center" marginTop="xl" overflowX="auto">
+    <VStack w="full" alignItems="center" overflowX="auto">
       {totalCount > 1 && !isPending && (
         <Pagination.Root
           total={totalCount}
