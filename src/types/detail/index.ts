@@ -39,4 +39,5 @@ export type RepositoryDetailItem = {
   label: string;
   icon: ComponentType<SVGProps<SVGSVGElement>>;
   value: number;
+  ariaLabel: string;
 };
