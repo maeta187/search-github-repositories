@@ -9,17 +9,14 @@ import { cacheLife } from 'next/cache';
 const SORT = 'stars';
 const ORDER = 'desc';
 const PER_PAGE = 10;
+const MAX_COUNT = 10;
 
 export async function fetchRepositories({
   q,
   page,
 }: FetchRepositoriesParams): Promise<RepositoryList> {
   'use cache';
-  cacheLife({
-    stale: 300,
-    revalidate: 600,
-    expire: 1800,
-  });
+  cacheLife('api');
 
   const queryString = new URLSearchParams({
     q,
@@ -54,7 +51,10 @@ export async function fetchRepositories({
       fullName: item.full_name,
       owner: { avatarUrl: item.owner.avatar_url },
     })),
-    totalCount: Math.min(Math.ceil(responseData.total_count / PER_PAGE), 10),
+    totalCount: Math.min(
+      Math.ceil(responseData.total_count / PER_PAGE),
+      MAX_COUNT,
+    ),
     incompleteResults: responseData.incomplete_results,
   };
 }
