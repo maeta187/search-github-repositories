@@ -19,6 +19,10 @@ interface RepositoryDetailProps {
   data: RepositoryDetail;
 }
 
+/**
+ * リポジトリー詳細ヘッダーコンポーネント
+ * アバター、リポジトリー名、言語を表示する
+ */
 export const RepositoryDetailHeader = ({ data }: RepositoryDetailProps) => {
   const repositoryNameRef = useRef<HTMLParagraphElement>(null);
 
@@ -65,6 +69,11 @@ export const RepositoryDetailHeader = ({ data }: RepositoryDetailProps) => {
   );
 };
 
+/**
+ * リポジトリー詳細アイテムエリアコンポーネント
+ * スター数、ウォッチャー数、フォーク数、イシュー数を表示する
+ * 要素が増えてもレイアウトが崩れないようにGridを使用している
+ */
 export const RepositoryDetailItemArea = ({ data }: RepositoryDetailProps) => {
   const items: RepositoryDetailItem[] = [
     {

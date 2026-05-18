@@ -13,6 +13,10 @@ interface RepositoryDetailContentProps {
   params: RepositoryDetailParams;
 }
 
+/**
+ * リポジトリー詳細コンポーネント
+ * API処理を行なって結果を子コンポーネントに渡す
+ */
 export const RepositoryDetailContent = async ({
   params,
 }: RepositoryDetailContentProps) => {

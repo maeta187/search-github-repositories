@@ -5,6 +5,10 @@ import { Container, Flex, Heading, Link } from '@/components/ui';
 import { NAV_LINKS } from '@/constant/nav-link';
 import { useEffect, useRef } from 'react';
 
+/**
+ * ヘッダーコンポーネント
+ * リンクを押すとTOPへ戻り検索結果がリセットされる
+ */
 export const Header = () => {
   const headingRef = useRef<HTMLAnchorElement>(null);
   useEffect(() => {
