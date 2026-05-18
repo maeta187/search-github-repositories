@@ -56,6 +56,11 @@ type Inputs = {
 const INIT_TOTAL_COUNT = 0;
 const INIT_PAGE = 1;
 
+/**
+ * トップコンテンツコンポーネント
+ * 検索フォーム、検索結果、ページネーションを表示する
+ * フォームの状態管理、検索処理、ページネーションの状態管理を行なっている
+ */
 export const TopContent = () => {
   const [repositories, setRepositories] = useState<Repository[] | null>(null);
   const [totalCount, setTotalCount] = useState<number>(INIT_TOTAL_COUNT);
@@ -140,6 +145,7 @@ export const TopContent = () => {
   );
 };
 
+/** リポジトリー検索フォームコンポーネント　　*/
 export const RepositorySearchForm = ({
   isPending,
   onSubmit,
@@ -210,6 +216,7 @@ export const RepositorySearchForm = ({
   );
 };
 
+/** 検索結果コンポーネント　*/
 export const RepositorySearchResult = ({
   isPending,
   repositories,
@@ -318,6 +325,7 @@ export const RepositorySearchResult = ({
   );
 };
 
+/** ページングコンポーネント */
 export const RepositoryListPagination = ({
   totalCount,
   page,

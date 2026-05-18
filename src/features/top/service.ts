@@ -6,11 +6,9 @@ import {
 } from '@/types/top';
 import { cacheLife } from 'next/cache';
 
-const SORT = 'stars';
-const ORDER = 'desc';
-const PER_PAGE = 10;
-const MAX_COUNT = 10;
-
+/**
+ * リポジトリー一覧取得サービス
+ */
 export async function fetchRepositories({
   q,
   page,

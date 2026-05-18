@@ -5,6 +5,9 @@ import {
   RepositoryDetailResponse,
 } from '@/types/detail';
 
+/**
+ * リポジトリー詳細取得サービス
+ */
 export async function fetchRepositoryDetail({
   owner,
   repo,
