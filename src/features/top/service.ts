@@ -1,4 +1,5 @@
 import { SEARCH_REPOSITORIES_ENDPOINT } from '@/constant/endpoint';
+import { MAX_COUNT, ORDER, PER_PAGE, SORT } from '@/constant/top';
 import {
   FetchRepositoriesParams,
   RepositoryList,
