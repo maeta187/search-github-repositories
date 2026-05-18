@@ -2,7 +2,6 @@
 
 import { HStack, Icon, Text, VStack } from '@/components/ui';
 import { AlertCircle, TriangleAlert } from 'lucide-react';
-import { useEffect, useRef } from 'react';
 
 interface ErrorTextProps {
   repositoryNotFound: boolean;
@@ -12,15 +11,6 @@ export const ErrorText = ({ repositoryNotFound }: ErrorTextProps) => {
   const message = repositoryNotFound
     ? 'リポジトリーが見つかりません。'
     : 'エラーが発生しました。';
-
-  const errorMessageRef = useRef<HTMLParagraphElement>(null);
-
-  useEffect(() => {
-    const id = requestAnimationFrame(() => {
-      errorMessageRef.current?.focus();
-    });
-    return () => cancelAnimationFrame(id);
-  }, [repositoryNotFound]);
 
   return (
     <VStack
@@ -39,8 +29,8 @@ export const ErrorText = ({ repositoryNotFound }: ErrorTextProps) => {
         <Text
           as="p"
           fontSize={{ base: 'md', md: 'sm' }}
-          ref={errorMessageRef}
-          tabIndex={0}
+          role="alert"
+          aria-atomic="true"
         >
           {message}
           <br />
