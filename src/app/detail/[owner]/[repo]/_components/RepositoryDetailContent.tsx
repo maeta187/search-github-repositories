@@ -17,7 +17,7 @@ export const RepositoryDetailContent = async ({
   params,
 }: RepositoryDetailContentProps) => {
   'use cache';
-  cacheLife({ stale: 300, revalidate: 600, expire: 1800 });
+  cacheLife('api');
   const { owner, repo } = await params;
   const response = await fetch(
     `${API_ROUTES.REPOSITORY_DETAIL}/${owner}/${repo}`,

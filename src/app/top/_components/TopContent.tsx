@@ -5,7 +5,6 @@ import {
   Avatar,
   Card,
   ClientOnly,
-  extractObject,
   Field,
   Form,
   Input,
@@ -21,6 +20,7 @@ import { API_ROUTES } from '@/constant/endpoint';
 import { NAV_LINKS } from '@/constant/nav-link';
 
 import { Repository } from '@/types/top';
+import { validateSpecialCharactersRepository } from '@/utils/validation';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState, useTransition } from 'react';
 import {
@@ -64,7 +64,10 @@ export const TopContent = () => {
   const [isPending, startTransition] = useTransition();
   const { push } = useRouter();
 
-  const form = useForm<Inputs>();
+  const form = useForm<Inputs>({
+    mode: 'onSubmit',
+    reValidateMode: 'onSubmit',
+  });
   const repositoryName = useWatch({
     control: form.control,
     name: 'repositoryName',
@@ -146,10 +149,9 @@ export const RepositorySearchForm = ({
     handleSubmit,
     formState: { errors },
   } = useFormContext<Inputs>();
+
   return (
     <Form.Root
-      errorMessage={extractObject(errors, (value) => value?.message)}
-      invalid={extractObject(errors, (value) => !!value)}
       required={{ repositoryName: true }}
       onSubmit={handleSubmit(onSubmit)}
     >
@@ -161,12 +163,33 @@ export const RepositorySearchForm = ({
         alignItems={{ base: 'baseline', sm: 'anchor-center' }}
       >
         <Form.Group w={{ base: '4/12', md: '5/12', sm: 'full' }}>
-          <Field.Root name="repositoryName" label="">
+          <Field.Root
+            name="repositoryName"
+            label=""
+            invalid={!!errors.repositoryName}
+            errorMessage={errors.repositoryName?.message}
+          >
             <ClientOnly fallback={<Skeleton />}>
               <Input
                 placeholder="Repository Name"
                 {...register('repositoryName', {
                   required: { message: 'リポジトリ名は必須です', value: true },
+                  validate: {
+                    specialCharacters: (value) => {
+                      const isValid = validateSpecialCharactersRepository(
+                        value,
+                        'リポジトリ名',
+                      );
+                      if (isValid instanceof Object && 'message' in isValid) {
+                        return isValid.message;
+                      }
+                      return isValid;
+                    },
+                  },
+                  maxLength: {
+                    message: 'リポジトリ名は256文字以内で入力してください',
+                    value: 256,
+                  },
                 })}
               />
             </ClientOnly>

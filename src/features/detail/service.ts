@@ -13,6 +13,7 @@ export async function fetchRepositoryDetail({
     `${FIND_ONE_REPOSITORY_ENDPOINT}/${owner}/${repo}`,
     {
       headers: {
+        Accept: 'application/vnd.github.text-match+json',
         'X-GitHub-Api-Version': '2026-03-10',
       },
     },

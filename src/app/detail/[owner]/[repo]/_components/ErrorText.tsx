@@ -3,18 +3,8 @@
 import { HStack, Icon, Link, Text, VStack } from '@/components/ui';
 import { NAV_LINKS } from '@/constant/nav-link';
 import { AlertCircle } from 'lucide-react';
-import { useEffect, useRef } from 'react';
 
 export const ErrorText = () => {
-  const errorMessageRef = useRef<HTMLParagraphElement>(null);
-
-  useEffect(() => {
-    const id = requestAnimationFrame(() => {
-      errorMessageRef.current?.focus();
-    });
-    return () => cancelAnimationFrame(id);
-  }, []);
-
   return (
     <VStack
       w="full"
@@ -28,8 +18,8 @@ export const ErrorText = () => {
         <Text
           as="p"
           fontSize={{ base: 'md', md: 'sm' }}
-          ref={errorMessageRef}
-          tabIndex={0}
+          role="alert"
+          aria-atomic="true"
         >
           エラーが発生しました。
           <br />
