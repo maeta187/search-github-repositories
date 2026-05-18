@@ -31,20 +31,10 @@ vi.mock('@/components/ui', () => ({
     Root: ({
       children,
       onSubmit,
-      errorMessage,
     }: {
       children: React.ReactNode;
       onSubmit: React.FormEventHandler;
-      errorMessage: Record<string, string>;
-    }) => (
-      <form onSubmit={onSubmit}>
-        {children}
-        {errorMessage &&
-          Object.values(errorMessage).map(
-            (msg, i) => msg && <span key={i}>{msg}</span>,
-          )}
-      </form>
-    ),
+    }) => <form onSubmit={onSubmit}>{children}</form>,
     Body: ({ children }: { children: React.ReactNode }) => (
       <div>{children}</div>
     ),
@@ -64,8 +54,17 @@ vi.mock('@/components/ui', () => ({
     ),
   },
   Field: {
-    Root: ({ children }: { children: React.ReactNode }) => (
-      <div>{children}</div>
+    Root: ({
+      children,
+      errorMessage,
+    }: {
+      children: React.ReactNode;
+      errorMessage: string;
+    }) => (
+      <>
+        <div>{children}</div>
+        {errorMessage && <span>{errorMessage}</span>}
+      </>
     ),
   },
   Input: forwardRef(
@@ -148,7 +147,7 @@ describe('RepositorySearchForm', () => {
     await user.click(screen.getByRole('button', { name: '検索' }));
     // バリデーションエラーが表示されることを確認する
     expect(
-      await screen.findByText('リポジトリ名は必須です'),
+      await screen.findByText(/リポジトリ名は必須です/),
     ).toBeInTheDocument();
     // onSubmitが呼ばれないことを確認する
     expect(onSubmit).not.toHaveBeenCalled();
