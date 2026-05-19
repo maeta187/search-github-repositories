@@ -24,7 +24,11 @@ export async function fetchRepositoryDetail({
 
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.message ?? 'APIリクエスト中にエラーが発生しました', {
+    const errorMessage =
+      error.status === '404'
+        ? 'リポジトリーが見つかりませんでした。'
+        : 'APIリクエスト中にエラーが発生しました。';
+    throw new Error(errorMessage, {
       cause: response,
     });
   }

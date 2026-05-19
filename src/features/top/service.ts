@@ -37,7 +37,11 @@ export async function fetchRepositories({
 
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.message ?? 'APIリクエスト中にエラーが発生しました', {
+    const isRateLimitFlag = error?.message?.includes('API rate limit exceeded');
+    const errorMessage = isRateLimitFlag
+      ? 'APIリクエスト制限を超えました。時間をおいて再度検索を行ってください。'
+      : 'APIリクエスト中にエラーが発生しました。再度検索を行ってください。';
+    throw new Error(errorMessage, {
       cause: error,
     });
   }

@@ -61,12 +61,14 @@ describe('fetchRepositoryDetail', () => {
     mockFetch.mockResolvedValue({
       ok: false,
       json: vi.fn().mockResolvedValue({
-        message: 'リポジトリーの取得に失敗しました',
+        message: 'APIリクエスト中にエラーが発生しました。',
       }),
     });
     const { owner, repo } = mockArgs;
     const response = fetchRepositoryDetail({ owner, repo });
     // resultがundefinedでないことを確認
-    await expect(response).rejects.toThrow('リポジトリーの取得に失敗しました');
+    await expect(response).rejects.toThrow(
+      'APIリクエスト中にエラーが発生しました。',
+    );
   });
 });
