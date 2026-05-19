@@ -12,6 +12,7 @@ import {
   Loading,
   Pagination,
   Skeleton,
+  SkeletonCircle,
   Text,
   VisuallyHidden,
   VStack,
@@ -65,6 +66,7 @@ export const TopContent = () => {
   const [repositories, setRepositories] = useState<Repository[] | null>(null);
   const [totalCount, setTotalCount] = useState<number>(INIT_TOTAL_COUNT);
   const [page, setPage] = useState(INIT_PAGE);
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [errorFlag, setErrorFlag] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
   const { push } = useRouter();
@@ -86,16 +88,20 @@ export const TopContent = () => {
           `${API_ROUTES.SEARCH_REPOSITORIES}/${name}/${pageNum}`,
         );
         if (!response.ok) {
-          const error: { error: string } = await response.json();
-          throw new Error(error.error);
+          const error: { message: string } = await response.json();
+          setErrorMessage(error.message);
+          setErrorFlag(true);
+          return;
         }
         const result = await response.json();
         setRepositories(result.items);
         setTotalCount(result.totalCount);
         setErrorFlag(false);
+        setErrorMessage('');
       } catch (error) {
         console.error(error);
         setErrorFlag(true);
+        setErrorMessage('エラーが発生しました。再度検索を行ってください。');
       }
     });
   };
@@ -121,7 +127,7 @@ export const TopContent = () => {
         <RepositorySearchForm isPending={isPending} onSubmit={handleSubmit} />
       </FormProvider>
       {errorFlag ? (
-        <ErrorText repositoryNotFound={false} />
+        <ErrorText repositoryNotFound={false} errorMessage={errorMessage} />
       ) : repositories !== null && repositories.length === 0 ? (
         <ErrorText repositoryNotFound={true} />
       ) : (
@@ -290,13 +296,17 @@ export const RepositorySearchResult = ({
                     gap={{ base: 'xl', md: 'md' }}
                     alignItems="center"
                   >
-                    <Avatar
-                      size="lg"
-                      name={repository.fullName}
-                      src={repository.owner.avatarUrl}
-                      alt={repository.fullName}
-                      aria-hidden="true"
-                    />
+                    <ClientOnly
+                      fallback={<SkeletonCircle boxSize="lg" rounded="l2" />}
+                    >
+                      <Avatar
+                        size="lg"
+                        name={repository.fullName}
+                        src={repository.owner.avatarUrl}
+                        alt={repository.fullName}
+                        aria-hidden="true"
+                      />
+                    </ClientOnly>
                     <Text
                       as="p"
                       fontSize={{ base: '2xl', md: 'md' }}
