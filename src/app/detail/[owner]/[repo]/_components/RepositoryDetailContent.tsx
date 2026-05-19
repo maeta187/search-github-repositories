@@ -1,5 +1,4 @@
 import { BackButton } from '@/app/detail/[owner]/[repo]/_components/BackButton';
-import { ErrorText } from '@/app/detail/[owner]/[repo]/_components/ErrorText';
 import {
   RepositoryDetailHeader,
   RepositoryDetailItemArea,
@@ -27,7 +26,8 @@ export const RepositoryDetailContent = async ({
     `${API_ROUTES.REPOSITORY_DETAIL}/${owner}/${repo}`,
   );
   if (!response.ok) {
-    return <ErrorText />;
+    const error: { message: string } = await response.json();
+    throw new Error(error.message);
   }
   const data: RepositoryDetail = await response.json();
   return (
