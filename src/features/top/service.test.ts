@@ -70,7 +70,7 @@ describe('fetchRepositories', () => {
     const response = fetchRepositories({ q, page });
     // throw new Errorが呼ばれることを確認
     await expect(response).rejects.toThrow(
-      'リポジトリーの一覧取得に失敗しました',
+      'APIリクエスト中にエラーが発生しました。再度検索を行ってください。',
     );
   });
 });

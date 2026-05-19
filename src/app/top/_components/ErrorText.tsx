@@ -5,12 +5,16 @@ import { AlertCircle, TriangleAlert } from 'lucide-react';
 
 interface ErrorTextProps {
   repositoryNotFound: boolean;
+  errorMessage?: string;
 }
 
-export const ErrorText = ({ repositoryNotFound }: ErrorTextProps) => {
+export const ErrorText = ({
+  repositoryNotFound,
+  errorMessage = 'エラーが発生しました。',
+}: ErrorTextProps) => {
   const message = repositoryNotFound
-    ? 'リポジトリーが見つかりません。'
-    : 'エラーが発生しました。';
+    ? 'リポジトリーが見つかりません。再度検索を行ってください。'
+    : errorMessage;
 
   return (
     <VStack
@@ -33,8 +37,6 @@ export const ErrorText = ({ repositoryNotFound }: ErrorTextProps) => {
           aria-atomic="true"
         >
           {message}
-          <br />
-          再度検索を行ってください。
         </Text>
       </HStack>
     </VStack>

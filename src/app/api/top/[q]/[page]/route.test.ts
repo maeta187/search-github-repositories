@@ -85,7 +85,7 @@ describe('GET /api/top/[q]/[page]', () => {
     const data = await response.json();
 
     // dataがmock化したエラーメッセージと一致することを確認
-    expect(data).toEqual({ error: 'リポジトリーの一覧取得に失敗しました' });
+    expect(data).toEqual({ message: 'リポジトリーの一覧取得に失敗しました' });
   });
 
   it('リポジトリ名が未入力の場合400エラーを返す', async () => {
@@ -106,7 +106,7 @@ describe('GET /api/top/[q]/[page]', () => {
 
     const data = await response.json();
     // dataがmock化したエラーメッセージと一致することを確認
-    expect(data).toEqual({ error: 'リポジトリ名は必須です' });
+    expect(data).toEqual({ message: 'リポジトリ名は必須です' });
   });
 
   it('リポジトリ名が256文字を超える場合400エラーを返す', async () => {
@@ -127,7 +127,7 @@ describe('GET /api/top/[q]/[page]', () => {
 
     // dataがmock化したエラーメッセージと一致することを確認
     expect(data).toEqual({
-      error: 'リポジトリ名は256文字以内で入力してください',
+      message: 'リポジトリ名は256文字以内で入力してください',
     });
   });
 
@@ -150,7 +150,7 @@ describe('GET /api/top/[q]/[page]', () => {
 
     // dataがmock化したエラーメッセージと一致することを確認
     expect(data).toEqual({
-      error:
+      message:
         'リポジトリ名には英字、数字、ハイフン、アンダースコア、ドットのみ使用できます',
     });
   });
@@ -171,6 +171,6 @@ describe('GET /api/top/[q]/[page]', () => {
     expect(response.ok).toBeFalsy();
     const data = await response.json();
     // dataがmock化したエラーメッセージと一致することを確認
-    expect(data).toEqual({ error: 'ページは数字で入力してください' });
+    expect(data).toEqual({ message: 'ページは数字で入力してください' });
   });
 });

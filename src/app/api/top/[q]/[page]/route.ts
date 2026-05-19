@@ -13,17 +13,17 @@ export async function GET(_: Request, { params }: TopRoutePrams) {
     // パラメーターのバリデーション
     const isValid = validateRepositoryParams(q, page);
     if (isValid instanceof Object && 'message' in isValid) {
-      return Response.json({ error: isValid.message }, { status: 400 });
+      return Response.json({ message: isValid.message }, { status: 400 });
     }
 
     const data = await fetchRepositories({ q, page });
     return Response.json(data);
   } catch (error) {
     if (error instanceof Error) {
-      return Response.json({ error: error.message }, { status: 500 });
+      return Response.json({ message: error.message }, { status: 500 });
     }
     return Response.json(
-      { error: 'リポジトリーの一覧取得に失敗しました' },
+      { message: 'リポジトリーの一覧取得に失敗しました' },
       { status: 500 },
     );
   }

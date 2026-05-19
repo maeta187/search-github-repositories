@@ -16,23 +16,23 @@ export async function GET(_: Request, { params }: DetailRoutePrams) {
     // オーナーのバリデーション
     const isValidOwner = validateRepositoryDetailOwnerParams(owner);
     if (isValidOwner instanceof Object && 'message' in isValidOwner) {
-      return Response.json({ error: isValidOwner.message }, { status: 400 });
+      return Response.json({ message: isValidOwner.message }, { status: 400 });
     }
 
     // リポジトリー名のバリデーション
     const isValidRepo = validateRepositoryDetailRepoParams(repo);
     if (isValidRepo instanceof Object && 'message' in isValidRepo) {
-      return Response.json({ error: isValidRepo.message }, { status: 400 });
+      return Response.json({ message: isValidRepo.message }, { status: 400 });
     }
 
     const data = await fetchRepositoryDetail({ owner, repo });
     return Response.json(data);
   } catch (error) {
     if (error instanceof Error) {
-      return Response.json({ error: error.message }, { status: 500 });
+      return Response.json({ message: error.message }, { status: 500 });
     }
     return Response.json(
-      { error: 'リポジトリーの取得に失敗しました' },
+      { message: 'リポジトリーの取得に失敗しました' },
       { status: 500 },
     );
   }

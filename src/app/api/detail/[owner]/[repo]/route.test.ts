@@ -79,7 +79,7 @@ describe('GET /api/detail/[owner]/[repo]', () => {
     expect(response.ok).toBeFalsy();
     const data = await response.json();
     // dataがmock化したエラーメッセージと一致することを確認
-    expect(data).toEqual({ error: 'リポジトリーの詳細取得に失敗しました' });
+    expect(data).toEqual({ message: 'リポジトリーの詳細取得に失敗しました' });
   });
 
   it('オーナーが未入力の場合400エラーを返す', async () => {
@@ -98,7 +98,7 @@ describe('GET /api/detail/[owner]/[repo]', () => {
     expect(response.ok).toBeFalsy();
     const data = await response.json();
     // dataがmock化したエラーメッセージと一致することを確認
-    expect(data).toEqual({ error: 'オーナーは必須です' });
+    expect(data).toEqual({ message: 'オーナーは必須です' });
   });
 
   it('オーナーが39文字を超える場合400エラーを返す', async () => {
@@ -120,7 +120,7 @@ describe('GET /api/detail/[owner]/[repo]', () => {
     expect(response.ok).toBeFalsy();
     const data = await response.json();
     // dataがmock化したエラーメッセージと一致することを確認
-    expect(data).toEqual({ error: 'オーナーは39文字以内で入力してください' });
+    expect(data).toEqual({ message: 'オーナーは39文字以内で入力してください' });
   });
 
   it('オーナーに特殊文字が含まれる場合400エラーを返す', async () => {
@@ -140,7 +140,7 @@ describe('GET /api/detail/[owner]/[repo]', () => {
     const data = await response.json();
     // dataがmock化したエラーメッジと一致することを確認
     expect(data).toEqual({
-      error: 'オーナーには英字、数字、ハイフンのみ使用できます',
+      message: 'オーナーには英字、数字、ハイフンのみ使用できます',
     });
   });
 
@@ -162,7 +162,8 @@ describe('GET /api/detail/[owner]/[repo]', () => {
     const data = await response.json();
     // dataがmock化したエラーメッジと一致することを確認
     expect(data).toEqual({
-      error: 'オーナーはハイフンで始まるまたはハイフンで終わることはできません',
+      message:
+        'オーナーはハイフンで始まるまたはハイフンで終わることはできません',
     });
   });
 
@@ -182,7 +183,7 @@ describe('GET /api/detail/[owner]/[repo]', () => {
     expect(response.ok).toBeFalsy();
     const data = await response.json();
     // dataがmock化したエラーメッジと一致することを確認
-    expect(data).toEqual({ error: 'リポジトリー名は必須です' });
+    expect(data).toEqual({ message: 'リポジトリー名は必須です' });
   });
 
   it('リポジトリー名が100文字を超える場合400エラーを返す', async () => {
@@ -205,7 +206,7 @@ describe('GET /api/detail/[owner]/[repo]', () => {
     const data = await response.json();
     // dataがmock化したエラーメッジと一致することを確認
     expect(data).toEqual({
-      error: 'リポジトリー名は100文字以内で入力してください',
+      message: 'リポジトリー名は100文字以内で入力してください',
     });
   });
 
@@ -230,7 +231,7 @@ describe('GET /api/detail/[owner]/[repo]', () => {
     const data = await response.json();
     // dataがmock化したエラーメッジと一致することを確認
     expect(data).toEqual({
-      error:
+      message:
         'リポジトリー名には英字、数字、ハイフン、アンダースコア、ドットのみ使用できます',
     });
   });

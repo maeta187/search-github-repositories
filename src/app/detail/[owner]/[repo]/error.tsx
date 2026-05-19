@@ -4,7 +4,7 @@ import { HStack, Icon, Link, Text, VStack } from '@/components/ui';
 import { NAV_LINKS } from '@/constant/nav-link';
 import { AlertCircle } from 'lucide-react';
 
-export const ErrorText = () => {
+export default function Error({ error }: { error: Error }) {
   return (
     <VStack
       w="full"
@@ -21,7 +21,7 @@ export const ErrorText = () => {
           role="alert"
           aria-atomic="true"
         >
-          エラーが発生しました。
+          {error.message}
           <br />
           検索画面から再度検索を行ってください。
         </Text>
@@ -38,4 +38,4 @@ export const ErrorText = () => {
       </Link>
     </VStack>
   );
-};
+}

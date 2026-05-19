@@ -85,10 +85,18 @@ describe('RepositoryDetailContent', () => {
   });
 
   it('リポジトリーの取得に失敗する', async () => {
-    mockFetch.mockResolvedValue({ ok: false });
+    mockFetch.mockResolvedValue({
+      ok: false,
+      json: vi.fn().mockResolvedValue({
+        message:
+          'APIリクエスト中にエラーが発生しました。再度検索を行ってください。',
+      }),
+    });
     // RepositoryDetailContentコンポーネントをレンダリングする
-    render(await RepositoryDetailContent({ params: detailParams }));
-    // ErrorTextコンポーネントが表示されていることを確認する
-    expect(screen.getByText('Error')).toBeInTheDocument();
+    await expect(
+      RepositoryDetailContent({ params: detailParams }),
+    ).rejects.toThrow(
+      'APIリクエスト中にエラーが発生しました。再度検索を行ってください。',
+    );
   });
 });
