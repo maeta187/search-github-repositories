@@ -59,16 +59,6 @@ bun dev
 - アクセシビリティ対応を行いました。
 - ユニットテストとe2eテストの両方を行いました。
 
-## テスト
-
-- `src/app/top/_components/TopContent.tsx`
-  - `RepositorySearchForm` : コンポーネントはバリデーションを行っており、期待通りに動作することを確認しました。
-  - `RepositorySearchResult` : ローディング表示やリストをクリックしてナビゲーションが発生するのでイベントが呼ばれるかのユニットテストの実行
-  - `RepositoryListPagination` : ページングを行うコンポーネントなのでe2eテストで確認するためユニットテストは行わない。
-
-- `src/features/top/validation.ts`・`src/features/top/validation.ts`
-  - API Routeから呼ばれている箇所だが、バリデーション処理は`src/utils/validation.ts`で行なっており、`route.test.ts`や`validation.test.ts`でそれぞれnユニットテストを行なっているのでこのファイルでは不要とする。
-
 ## AIを使ったポイント
 
 - Emotion依存のHydrationErrorがドキュメント通りにしても直らなかったのでAIに質問しました。
